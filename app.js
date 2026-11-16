@@ -158,3 +158,62 @@ console.log("C1 (TMDB 현재 상영작 수 / 집계 기간):", `${tmdbStats.coun
 console.log("C2 (TMDB 평균 평점 / 평균 인기도):", `${tmdbStats.avgVote}점 / ${tmdbStats.avgPopularity}`);
 console.table(top5Tmdb);
 console.log("C4 (원어별 작품 수 분포):", tmdbStats.langCount);
+
+// [1번] 보너스용 함수 정의 (reduce 평균 + 요일 포함 날짜)
+function getAverageRatingWithReduce(list) {
+  if (list.length === 0) return 0;
+  const sum = list.reduce((acc, movie) => acc + movie.rating, 0);
+  return Number((sum / list.length).toFixed(2));
+}
+
+function getTmdbAverageVoteWithReduce(results) {
+  if (results.length === 0) return 0;
+  const sum = results.reduce((acc, item) => acc + item.vote_average, 0);
+  return Number((sum / results.length).toFixed(2));
+}
+
+function formatDateWithDay(dateInput = new Date()) {
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  let dateObj;
+
+  if (typeof dateInput === "string") {
+    const [y, m, d] = dateInput.split("-").map(Number);
+    dateObj = new Date(y, m - 1, d);
+  } else {
+    dateObj = dateInput;
+  }
+
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  const dayOfWeek = days[dateObj.getDay()];
+
+  return `${year}-${month}-${day} (${dayOfWeek})`;
+}
+
+
+// [2번] 보너스 실행 코드 (콘솔 출력 + 화면 기준일 추가 + fetch)
+const reduceMovieAvg = getAverageRatingWithReduce(movies);
+const reduceTmdbAvg = getTmdbAverageVoteWithReduce(tmdbResults);
+
+console.log("=== [보너스] reduce() 평균 계산 ===");
+console.log("movies 평균 평점 (reduce):", `${reduceMovieAvg}점`);
+console.log("TMDB 평균 평점 (reduce):", `${reduceTmdbAvg}점`);
+
+const todayWithDay = formatDateWithDay();
+const tmdbMinWithDay = formatDateWithDay(TMDB.dates.minimum);
+const tmdbMaxWithDay = formatDateWithDay(TMDB.dates.maximum);
+
+console.log("=== [보너스] 요일 포함 날짜 출력 ===");
+console.log("기준일:", todayWithDay);
+console.log("TMDB 집계 기간:", `${tmdbMinWithDay} ~ ${tmdbMaxWithDay}`);
+
+// 화면 <pre id="out"> 3줄 요약 아래에 기준일 추가
+outEl.textContent += `\n기준일: ${todayWithDay}`;
+// loadJson : tmdb.json 파일 ⇒ 콘솔에 평점 상위 5편 표(13주차 fetch 미리 보기)
+async function loadJson() {
+ const res = await fetch("tmdb.json");
+ const data = await res.json();
+ console.table(sortBy(getList(data), "vote_average", true).slice(0, 5), ["title", "vote_average"]);
+}
+loadJson();

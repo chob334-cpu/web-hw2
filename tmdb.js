@@ -22,23 +22,6 @@ const TMDB = {
         },
         {
             "adult": false,
-            "backdrop_path": "/yE766yhgg98tKwTKd8CyNvAtmn6.jpg",
-            "genre_ids": [12, 53],
-            "id": 1263337,
-            "title": "Heart of the Beast",
-            "original_language": "en",
-            "original_title": "Heart of the Beast",
-            "overview": "After a harrowing plane crash, Special Forces officer James Belmont and his combat dog, Odin, find themselves stranded deep in the Alaskan wilderness. Together, they are forced into a brutal fight for survival against the elements.",
-            "popularity": 598.6444,
-            "poster_path": "/6sYemVUn79UPKz1ZsSG6kPU4RVy.jpg",
-            "release_date": "2026-10-28",
-            "softcore": false,
-            "video": false,
-            "vote_average": 7.592,
-            "vote_count": 860
-        },
-        {
-            "adult": false,
             "backdrop_path": "/smZ8BT4Vzw4iCEppTLCnN8jNYtn.jpg",
             "genre_ids": [27, 9648],
             "id": 1400837,
