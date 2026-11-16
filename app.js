@@ -211,9 +211,17 @@ console.log("TMDB 집계 기간:", `${tmdbMinWithDay} ~ ${tmdbMaxWithDay}`);
 // 화면 <pre id="out"> 3줄 요약 아래에 기준일 추가
 outEl.textContent += `\n기준일: ${todayWithDay}`;
 // loadJson : tmdb.json 파일 ⇒ 콘솔에 평점 상위 5편 표(13주차 fetch 미리 보기)
+function getList(data) {
+  return data.results || [];
+}
+
+function sortBy(list, key, desc = false) {
+  return [...list].sort((a, b) => (desc ? b[key] - a[key] : a[key] - b[key]));
+}
+
 async function loadJson() {
- const res = await fetch("tmdb.json");
- const data = await res.json();
- console.table(sortBy(getList(data), "vote_average", true).slice(0, 5), ["title", "vote_average"]);
+  const res = await fetch("tmdb.json");
+  const data = await res.json();
+  console.table(sortBy(getList(data), "vote_average", true).slice(0, 5), ["title", "vote_average"]);
 }
 loadJson();
